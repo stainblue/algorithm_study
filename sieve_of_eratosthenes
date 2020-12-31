@@ -1,0 +1,20 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+#define MAX 1000
+
+int main() {
+	// 1000 이하의 소수 구하기
+	bool isprime[MAX + 1];
+	memset(isprime, true, sizeof(isprime));
+
+	isprime[0] = isprime[1] = false;
+	for (int i = 2; i <= MAX; i++) {
+		if (!isprime[i]) continue;
+
+		for (int j = i * 2; j <= MAX; j += i) {
+			isprime[j] = false;
+		}
+	}
+}
