@@ -50,3 +50,10 @@ B 의 내용은 이해하기 쉽다. A 가 참 임을 귀류법을 통해 증명
 따라서 A 는 참이다. 
 
 증명 끝.
+
+
+</br>
+
+## 관련 문제
+* [트리의 지름 (백준 1167)](https://www.acmicpc.net/problem/1167)   
+* [트리의 지름 (백준 1967)](https://www.acmicpc.net/problem/1967)
