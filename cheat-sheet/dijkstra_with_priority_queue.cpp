@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+#include <utility>
+#include <limits.h>
+#include <queue>
+using namespace std;
+
+#define MAX_VERTICES 100000
+
+vector<pair<int, int>> adj[MAX_VERTICES + 1];   // 인접행렬. first : vertex index, second : weight(distance)
+int nVertices, start;                           // 정점의 개수, 시작 정점 번호
+int dist[MAX_VERTICES + 1];	                // 출발점으로부터 i'th 정점까지의 거리
+
+struct Node {
+	int vertex, distance;
+};
+
+struct cmp {
+	bool operator() (Node a, Node b) {
+		// distance 오름차순
+		return a.distance > b.distance;
+	}
+};
+
+void dijkstra() {
+	fill_n(dist, MAX_VERTICES + 1, INT_MAX);
+	priority_queue<Node, vector<Node>, cmp> pq;
+	dist[start] = 0;
+	pq.push({ start, 0 });
+
+	while (!pq.empty()) {
+		int cur = pq.top().vertex;
+		int curDistance = pq.top().distance;
+		pq.pop();
+
+		if (dist[cur] < curDistance) continue;
+
+		for (int i = 0; i < adj[cur].size(); i++) {
+			int next = adj[cur][i].first;
+			int distance = adj[cur][i].second;
+
+			if (dist[next] > dist[cur] + distance) {
+				dist[next] = dist[cur] + distance;
+				pq.push({ next, dist[next] });
+			}
+		}
+	}
+}
+
+int main() {
+	cin.tie(NULL);
+	ios_base::sync_with_stdio(false);
+
+	int nEdges; // 입력할 간선의 개수
+	cin >> nVertices >> nEdges >> start;
+	for (int i = 1; i <= nEdges; i++) {
+		// 입력 예 : 1 3 4 (1에서 3으로 가는 간선의 가중치 4)
+		int from, to, distance;
+		cin >> from >> to >> distance;
+		adj[from].push_back(make_pair(to, distance));
+	}
+
+	dijkstra();
+
+	// 시작정점에서부터 i'th 정점까지의 거리 출력
+	for (int i = 1; i <= nVertices; i++) {
+		cout << dist[i] << " ";
+	}
+	return 0;
+}
