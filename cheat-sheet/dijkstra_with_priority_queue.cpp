@@ -23,7 +23,7 @@ struct cmp {
 };
 
 void dijkstra() {
-	fill_n(dist, MAX_VERTICES + 1, INT_MAX);
+	fill_n(dist, MAX_VERTICES + 1, INT_MAX); // dist 배열 INT_MAX값으로 초기화
 	priority_queue<Node, vector<Node>, cmp> pq;
 	dist[start] = 0;
 	pq.push({ start, 0 });
