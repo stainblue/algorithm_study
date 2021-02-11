@@ -22,30 +22,22 @@ private:
 	};
 
 	vector<edge*> adj[MAXV + 1];
-public:
-	int nVertices, nEdges;
-	int source, sink;
-	int maxFlow = 0;
-
-	void addEdge(int from, int to, int capacity, bool directed = true) {
-		edge* e = new edge(from, to, capacity);
-		edge* er = new edge(to, from, directed ? 0 : capacity);
-		e->reverse = er;
-		er->reverse = e;
-		adj[from].push_back(e);
-		adj[to].push_back(er);
-	}
-
+	int prev[MAXV + 1];
+	edge* backEdge[MAXV + 1];
 
 	// bfs
-	bool isAugmentingPathExist(int prev[], edge** backEdge) {
+	bool isAugmentingPathExist() {
+		return isAugmentingPathExist(source, sink);
+	}
+
+	bool isAugmentingPathExist(int from, int to) {
 		for (int i = 0; i < MAXV + 1; i++) {
 			prev[i] = -1;
 			backEdge[i] = NULL;
 		}
 		queue<int> q;
-		q.push(source);
-		while (!q.empty() && prev[sink] == -1) {
+		q.push(from);
+		while (!q.empty() && prev[to] == -1) {
 			int cur = q.front(); q.pop();
 			for (auto e : adj[cur]) {
 				int next = e->to;
@@ -56,15 +48,26 @@ public:
 				}
 			}
 		}
-		if (prev[sink] == -1) return false;
+		if (prev[to] == -1) return false;
 		return true;
 	}
 
-	// Edmonds-Karp
+	int maxFlow = 0;
+public:
+	int source, sink;
+
+	void addEdge(int from, int to, int capacity, bool directed = true) {
+		edge* e = new edge(from, to, capacity);
+		edge* er = new edge(to, from, directed ? 0 : capacity);
+		e->reverse = er;
+		er->reverse = e;
+		adj[from].push_back(e);
+		adj[to].push_back(er);
+	}
+
+	// Edmonds-Karp Algorithm
 	int findMaxFlow() {
-		int prev[MAXV + 1];
-		edge* backEdge[MAXV + 1] = { 0, };
-		while (isAugmentingPathExist(prev, backEdge)) {
+		while (isAugmentingPathExist()) {
 			int newFlow = 1000;
 
 			for (int i = sink; i != source; i = prev[i]) {
