@@ -29,8 +29,55 @@ LIS 는 Longest Increasing Subsequence 의 약자로 한국어로 **가장 긴 �
 문제 : [가장 긴 증가하는 부분 수열 (백준 11053)](https://www.acmicpc.net/problem/11053)
 
 ### 2-1. 완전탐색을 이용한 풀이
-주어진 수열을 처음부터 탐색하며 모든 경우의 수 (가능한 모든 증가 부분 수열) 을 구해보는 방법을 생각해 볼 수 있다.   
+* 주어진 수열을 처음부터 탐색하며 모든 경우의 수 (가능한 모든 증가 부분 수열) 을 구해보는 방법을 생각해 볼 수 있다.   
 주어진 수열을 **`A`** 라고 하면 **`A[i]` 가 마지막인 증가 부분 수열의 길이**는 **`j < i && A[j] < A[i]`** 인 **`j`** 가 존재할 때 **`A[j]` 가 마지막인 증가 부분 수열의 길이 + 1** 이 된다.
+
+* 재귀를 사용하여 이를 구현한 코드는 다음과 같다.
+```c++
+#include <iostream>
+using namespace std;
+
+#define endl "\n"
+#define ll long long
+
+int N, A[1001];
+
+int getLISlen(int i) {
+	int ans = 1;
+	for (int j = 1; j < i; j++) {
+		if (!(A[j] < A[i])) continue;
+		ans = max(ans, getLISlen(j) + 1);
+	}
+	return ans;
+}
+
+int main() {
+	cin.tie(NULL);
+	ios::sync_with_stdio(false);
+	
+	cin >> N;
+	int ans = 0;
+	for (int i = 1; i <= N; i++) {
+		cin >> A[i];
+		ans = max(ans, getLISlen(i));
+	}
+	cout << ans << endl;
+	
+	return 0;
+}
+```
+
+* 시간 복잡도 : N 이 1 커지면 `getLISlen()` 함수가 2배로 호출된다. 즉, 시간복잡도는 **O(2<sup>N</sup>)** 이다. 아래 그림은 함수가 호출되는 모습을 나타낸 그림이다.   
+
+***
+**N 이 3 일때**
+![N 이 3 일때](https://user-images.githubusercontent.com/44018094/110198511-75b62e80-7e96-11eb-9271-1c645c44fed7.png)   
+***
+**N 이 4 일때**
+![N 이 4 일때](https://user-images.githubusercontent.com/44018094/110198514-764ec500-7e96-11eb-892b-e9660f44eaba.png)   
+***
+이 문제의 경우 N 의 범위가 1 ~ 1000 이기 때문에 위 풀이로는 시간초과가 난다.
+
 
 ### 2-2. DP를 이용한 풀이
 
