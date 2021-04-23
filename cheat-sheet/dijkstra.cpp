@@ -1,3 +1,5 @@
+// 음의 가중치를 갖는 그래프는 댜익스트라 사용 불가
+
 #include <iostream>
 #include <vector>
 #include <utility>
