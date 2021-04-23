@@ -18,7 +18,7 @@ void prim() {
 		if (dist[i] > adj[1][i]) dist[i] = adj[1][i];	// V1과 인접해있는 vertex들의 distance를 adj[1][vertexIndex]로 갱신
 	}
 
-	for (int i = 0; i < nVerteices - 1; i++) {		// V1은 이미 Y에 포함됐으므로 N - 1번 반복
+	for (int i = 0; i < nVertices - 1; i++) {		// V1은 이미 Y에 포함됐으므로 N - 1번 반복
 		// G = (V, E)의 V - Y 중에서 Y와 가장 가까운 vertex 찾기
 		int minDist = INT_MAX;				// 가장 가까운 vertex와의 거리
 		int vnear;					// 가장 가까운 vertex의 index
